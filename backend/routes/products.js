@@ -1,9 +1,11 @@
 import express from 'express'
-import productMiddleWare from '../middleware/productMiddleware.js';
+import {productMiddleWare1,productMiddleWare2} from '../middleware/productMiddleware.js';
 const productRoute =express.Router()
 
 
-productRoute.get("/getAllProducts",productMiddleWare,(request,resp)=>{ //makes the middleware unique to the specific function
+productRoute.get("/getAllProducts",
+    productMiddleWare2,
+    (request,resp)=>{ //makes the middleware unique to the specific function
     try{
         resp.json({
             code :"120",
@@ -16,11 +18,11 @@ productRoute.get("/getAllProducts",productMiddleWare,(request,resp)=>{ //makes t
 })
 
 
-productRoute.get("/getSingleProducts",(request,resp)=>{
+productRoute.get("/getSingleProducts/:id",(request,resp)=>{
     try{
         resp.json({
             code :"120",
-            message :"single product received",
+            message :`single product received${request.params.id}`,
             data:{}
         });
     }catch(err){
@@ -28,10 +30,11 @@ productRoute.get("/getSingleProducts",(request,resp)=>{
     }
 })
 
-productRoute.get('/getProductById/:id',(request,resp)=>{
+productRoute.get('/getProductById',
+    productMiddleWare1,(request,resp)=>{ //makes the middleware unique to the specific function
     resp.json({
         "code":"120",
-        "message":"User retrieved successfully for"+request.params.id,
+        "message":`product retrieved successfully for  the name of ${resp.name}`,
         "data":{}
     })
 })
